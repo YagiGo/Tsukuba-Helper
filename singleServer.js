@@ -20,13 +20,42 @@ http.createServer(function(req,res) {
         });
         return promise;
     };
+    absPath = path.join(__dirname, pathname)
     sendFile(
         //TODO Different files(css, js, img...)
-        path.join(__dirname, pathname)).then(
+        absPath).then(
         function(data){
             console.log("Sending " + pathname);
-            res.writeHead(200, {"Content-Type":"text/html; charset=utf8"});
-            res.write(data);
+            if(absPath.endsWith('.css'))
+            {
+                res.writeHead(200, {"Content-Type":"text/css; charset=utf8"});
+                res.write(data);
+                res.end();
+            }
+            else if(absPath.endsWith('.js'))
+            {
+                res.writeHead(200, {"Content-Type":"text/javascript; charset=utf8"});
+                res.write(data);
+                res.end();
+            }
+            else if(absPath.endsWith('.html'))
+            {
+                res.writeHead(200, {"Content-Type":"text/html; charset=utf8"});
+                res.write(data);
+                res.end();
+            }
+            else if(absPath.endsWith('.png'))
+            {
+                res.writeHead(200, {"Content-Type":"image/png"});
+                res.write(data);
+                res.end();
+            }
+            else if(absPath.endsWith('.jpg'))
+            {
+                res.writeHead(200, {"Content-Type":"image/jpg"});
+                res.write(data);
+                res.end();
+            }
         },
         function(err) {
             console.error("FILE NOT FOUND!");
