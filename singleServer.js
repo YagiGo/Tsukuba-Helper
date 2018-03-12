@@ -1,7 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-
+var path = require('path');
 //Create Server
 http.createServer(function(req,res) {
     //Parse URL
@@ -17,15 +17,20 @@ http.createServer(function(req,res) {
                     resolve(data);
                 }
             });
-        })
-    }
-    sendFile(pathname.substring[1]).then(function(data){
-        console.log("Sending " + pathname.substring[1])
-        res.writeHead(200, {"Content-Type":"text/html; charset=utf8"});
-        res.write(data.toString());
-    },
+        });
+        return promise;
+    };
+    sendFile(
+        //TODO Different files(css, js, img...)
+        path.join(__dirname, pathname)).then(
+        function(data){
+            console.log("Sending " + pathname);
+            res.writeHead(200, {"Content-Type":"text/html; charset=utf8"});
+            res.write(data);
+        },
         function(err) {
-        console.error("FILE NOT FOUND!");
-        res.writeHead(404, {"Content-Type":"text/html; charset=utf8"});
+            console.error("FILE NOT FOUND!");
+            res.writeHead(404, {"Content-Type":"text/html; charset=utf8"});
+            res.write("404 NOT FOUND!" + err);
         });
 }).listen(8080);
