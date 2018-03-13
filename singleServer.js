@@ -3,10 +3,13 @@ var fs = require('fs');
 var url = require('url');
 var path = require('path');
 //Create Server
-http.createServer(function(req,res) {
+function start(route) {
+
+    http.createServer(function(req,res) {
     //Parse URL
     var pathname = url.parse(req.url).pathname;
     console.log('Request for ' + pathname + ' Received');
+    route(pathname);
     var sendFile = function(fileName) {
         var promise = new Promise((resolve, reject) => {
             fs.readFile(fileName, 'utf8', function(err,data) {
@@ -63,3 +66,5 @@ http.createServer(function(req,res) {
             res.write("404 NOT FOUND!" + err);
         });
 }).listen(8080);
+}
+exports.start = start;
