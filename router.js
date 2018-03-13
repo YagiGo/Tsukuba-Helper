@@ -1,14 +1,15 @@
-function router(absPath, handle, response) {
+var path = require('path');
+var fileprocesser = require('./fileHandler');
+function router(pathname, handle, response) {
     console.log("About to route a request for " + pathname);
+    let absPath = path.join(__dirname, pathname);
     if(typeof handle[pathname] === 'function')
     {
-        return handle[pathname](absPath, response);
+        handle[pathname](absPath, response);
     }
     else {
         console.log('No Request Handler Found for ' + pathname);
-        response.writeHead(200, {"Content-Type" : "text/html; charset=utf8"});
-        response.write("404, NOT FOUND");
-        response.end();
+        fileprocesser.fileprocesser(pathname, response);
     }
 }
 exports.router = router;

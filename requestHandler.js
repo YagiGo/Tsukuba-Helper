@@ -1,9 +1,7 @@
 var fileprocesser = require('./fileHandler');
-function start(request, response) {
+function start(absPath, response) {
     console.log('Request Handler start was called');
-    response.writeHead(200, {"Content-Type" : "text/html; charset=utf8"});
-    response.write("Server Works!");
-    response.end();
+    fileprocesser.fileprocesser(absPath, response);
 }
 
 
